@@ -1,0 +1,13 @@
+@import url(./navbar_container.css);
+@import url(./content_container.css);
+
+.hero-container{
+    /* position: relative;
+    top: 80px; */
+    margin: 90px 0 10px 0;
+}
+.container{
+    display: block;
+    min-height: 500px;
+    background-color: rgb(247, 247, 247);
+}
