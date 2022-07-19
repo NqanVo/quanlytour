@@ -5,12 +5,18 @@
     use Carbon\Carbon;
     use Carbon\CarbonInterval;
     $today = Carbon::now('Asia/Ho_Chi_Minh')->toDateString();
+
     $idtour = $_GET['idtour'];
     $idvechitiet= $_GET['idvechitiet'];
-    $idnhanhotro = $_GET['idnhanhotro'];
-    $idhotrokinhphi = $_GET['idhotrokinhphi'];
-    $idnv = $_GET['idnv'];
-    $thamnien = $_GET['thamnien'];
+
+    //lay thong tin user
+    foreach($_SESSION['thongtin_user'] as $key => $value){
+    $idnv = $value['id_nhanvien'];
+    $iddv = $value['id_donvi'];
+    $idhotrokinhphi = $value['id_hotrokinhphi'];
+    $thamnien = $value['thamnien'];
+    $idnhanhotro = $value['id_nhan_hotro'];
+    }
 
     //lay sl ve trong tour
     $tour_select = "SELECT * FROM tbl_tourdulich WHERE tbl_tourdulich.id_tourdulich = '".$idtour."'";
@@ -38,6 +44,7 @@
         $hotro_kinhphi_chitiet_row = mysqli_fetch_array($hotro_kinhphi_chitiet_query);
         $tien_hotro = $hotro_kinhphi_chitiet_row['tien_hotro_kinhphi_chitiet'];
     }
+
     //giave
     $gia_ve_tour_query = mysqli_query($mysqli, "SELECT * FROM tbl_tourdulich WHERE id_tourdulich = '".$idtour."'");
     $gia_ve_tour_row = mysqli_fetch_array($gia_ve_tour_query);

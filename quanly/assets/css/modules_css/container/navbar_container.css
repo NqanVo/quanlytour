@@ -28,9 +28,8 @@
 .sub3-navbar__list{
     display: none;
     list-style: none;
-    position: absolute;
     top: 0;
-    left: 100%;
+    left: 0;
     z-index: 1;
     width: 100%;
     padding: 0 10px;
@@ -55,7 +54,6 @@
 .sub-navbar__list-item,
 .sub2-navbar__list-item,
 .sub3-navbar__list-item{
-    position: relative;
     padding: 8px 0;
     border-bottom: 1px solid var(--color-minor);
     transition: 0.25s;
@@ -76,4 +74,3 @@
     text-decoration: none;
     color: var(--color-black);
 }
-

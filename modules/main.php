@@ -13,6 +13,9 @@ if($select == 'dangnhap' && $query == '1'){
     include('container/login/sign_in.php');
 }
 // tour
+    elseif($select == 'tour' && $query == 'likedall'){
+        include('container/tour/tour_liked_danhsach.php');
+    }
     elseif($select == 'tour' && $query == 'timkiem'){
         include('container/search/timkiem.php');
         include('container/search/timkiem_ketqua.php');

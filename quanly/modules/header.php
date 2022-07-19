@@ -61,9 +61,6 @@
     </ul>
 
     <ul class="header__list">
-        <!-- <li class="header__list-item">
-            <a href="" class="header__list-item-link"><i class="fa-solid fa-bell"></i></a>
-        </li> -->
         <li class="header__list-item">
             <p class="header__list-item-link"><i class="ti-settings"></i></p>
             <ul class="header__sub-list">

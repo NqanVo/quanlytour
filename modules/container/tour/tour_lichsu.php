@@ -1,4 +1,9 @@
 <?php
+    if(!isset($_SESSION['user_login']))
+    {
+        header('Location:index.php');
+    }
+    
     use Carbon\Carbon;
     use Carbon\CarbonInterval;
     $today = Carbon::now('Asia/Ho_Chi_Minh')->toDateString();
@@ -123,9 +128,9 @@
                             ?>
                             <tr>
                                 <td><?php echo $tour_row_hethan['id_tourdulich'] ?></td>
-                                <td><?php echo $tour_row['ten_tourdulich'] ?></td>
-                                <td><?php echo date("d/m/Y", strtotime($tour_row['ngaydi_tourdulich'])); ?> -
-                                    <?php echo date("d/m/Y", strtotime($tour_row['ngayve_tourdulich'])); ?>
+                                <td><?php echo $tour_row_hethan['ten_tourdulich'] ?></td>
+                                <td><?php echo date("d/m/Y", strtotime($tour_row_hethan['ngaydi_tourdulich'])); ?> -
+                                    <?php echo date("d/m/Y", strtotime($tour_row_hethan['ngayve_tourdulich'])); ?>
                                 </td>
                                 <td><?php echo $dangkytour_row_hethan['ngaydangky_dangkytour'] ?>
                                 </td>

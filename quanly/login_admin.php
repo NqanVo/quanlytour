@@ -6,27 +6,33 @@ if(isset($_POST['dangnhap_admin']))
 {
     $tk = $_POST['taikhoan_admin'];
     $mk = md5($_POST['matkhau_admin']);
-    $taikhoan_select = "SELECT * FROM tbl_nhanvien WHERE tbl_nhanvien.taikhoan_nhanvien ='".$tk."' AND tbl_nhanvien.matkhau_nhanvien ='".$mk."'";
-    $taikhoan_query = mysqli_query($mysqli, $taikhoan_select);
-    $taikhoan_row = mysqli_fetch_array($taikhoan_query);
-    $taikhoan_count = mysqli_num_rows($taikhoan_query);
-    if($taikhoan_count == 0 || $taikhoan_row['status_nhanvien'] == 0)
-    {
-        echo '<script>window.alert("Thông tin đăng nhập sai hoặc tài khoản đã bị khóa!");</script>';
-        
+    $chuoi_con = "'";
+    if (strlen(strstr($tk, $chuoi_con)) > 0) {
+        echo '<script>window.alert("Tài khoản không hợp lệ!");</script>';
     }
-    else
-    {
-        if($taikhoan_row['chucvu_nhanvien'] != 0)
+    else{
+        $taikhoan_select = "SELECT * FROM tbl_nhanvien WHERE tbl_nhanvien.taikhoan_nhanvien ='".$tk."' AND tbl_nhanvien.matkhau_nhanvien ='".$mk."'";
+        $taikhoan_query = mysqli_query($mysqli, $taikhoan_select);
+        $taikhoan_row = mysqli_fetch_array($taikhoan_query);
+        $taikhoan_count = mysqli_num_rows($taikhoan_query);
+        if($taikhoan_count == 0 || $taikhoan_row['status_nhanvien'] == 0)
         {
-            echo '<script>window.alert("Chỉ tài khoản quản lý mới được đăng nhập!");</script>';
+            echo '<script>window.alert("Thông tin đăng nhập sai hoặc tài khoản đã bị khóa!");</script>';
+            
         }
-        else{
-            $_SESSION['login_admin'] = $taikhoan_row['id_nhanvien'];
-            header('Location:index.php');
-        }       
+        else
+        {
+            if($taikhoan_row['chucvu_nhanvien'] != 0)
+            {
+                echo '<script>window.alert("Chỉ tài khoản quản lý mới được đăng nhập!");</script>';
+            }
+            else{
+                $_SESSION['login_admin'] = $taikhoan_row['id_nhanvien'];
+                header('Location:index.php');
+            }       
+        }
     }
-}
+    }
 
 ?>
 
@@ -70,12 +76,15 @@ if(isset($_POST['dangnhap_admin']))
                     <span class="master-login__box-group-label">
                         Mật khẩu:
                     </span>
-                    <input type="password" name="matkhau_admin" class="master-login__box-group-label-input" required></input>
+                    <input type="password" name="matkhau_admin" class="master-login__box-group-label-input"
+                        required></input>
                 </div>
                 <button type="submit" name="dangnhap_admin" class="master-login__box-btn">Đăng nhập</button>
-                <a href="../index.php"class="a-defaul btn-s btn-mini"><i class="fa-solid fa-arrow-left-long"></i> Trang chủ</a>
+                <a href="../index.php" class="a-defaul btn-s btn-mini"><i class="fa-solid fa-arrow-left-long"></i> Trang
+                    chủ</a>
             </div>
         </div>
     </form>
 </body>
+
 </html>

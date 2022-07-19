@@ -1,9 +1,33 @@
 <?php
 
-
  use Carbon\Carbon;
  use Carbon\CarbonInterval;
  $today = Carbon::now('Asia/Ho_Chi_Minh')->toDateString();
+
+ if(isset($_POST['timkiem']))
+{
+    $keyword = $_POST['keyword'];
+    $donvi = $_POST['donvi'];
+    $diadiem = $_POST['diadiem'];
+    if($donvi == -1){
+        $donvi_view = "";
+    }
+    elseif($donvi == 0){
+        $donvi_view = "Đơn vị: Tất cả";
+    }
+    else{
+        $select_tendonvi_row = mysqli_fetch_array(mysqli_query($mysqli,"SELECT * FROM tbl_donvi WHERE id_donvi = '".$donvi."'"));
+        $donvi_view = "Đơn vị: ".$select_tendonvi_row['ten_donvi'];
+    }
+
+    if($diadiem === '0'){
+        $diadiem_view = "Địa điểm: Tất cả";
+    }
+    else
+    {
+        $diadiem_view = "Địa điểm: ".$diadiem;
+    }
+
 ?>
 
 <div class="grid wide">
@@ -17,18 +41,12 @@
                 </div>
                 <div class="col l-12 c-12">
                     <div class="content__label">
-                        <h3 class="content__label-heading">Kết quả tìm kiếm: <i class="fa-solid fa-magnifying-glass"></i></h3>
+                        <h3 class="content__label-heading">Tìm kiếm: <?php echo $keyword?>. <?php echo $donvi_view?>. <?php echo $diadiem_view?> <i class="fa-solid fa-magnifying-glass"></i></h3>
                     </div>
                 </div>
             </div>
             <div class="row">
             <?php
-            if(isset($_POST['timkiem']))
-            {
-                $keyword = $_POST['keyword'];
-                $donvi = $_POST['donvi'];
-                $diadiem = $_POST['diadiem'];
-
                 if($keyword == '' && $donvi == '-1' && $diadiem == '0')
                 {
                     $tour_select = "SELECT * FROM tbl_tourdulich ORDER BY id_tourdulich DESC";
@@ -61,7 +79,7 @@
                             <div class="content__tour-item">
 
                                 <?php
-                                    if(strtotime($tour_moi_row['dangkytruoc_tourdulich']) > strtotime($today))
+                                    if(strtotime($tour_moi_row['dangkytruoc_tourdulich']) >= strtotime($today))
                                     {
                                         if($tour_moi_row['soluongdadangky_tourdulich'] == $tour_moi_row['soluongtoida_tourdulich'])
                                         {
@@ -90,6 +108,22 @@
                                     <img
                                         src="quanly/modules/container/quanly_tour/uploads/<?php echo $tour_moi_row['img_tourdulich'] ?>"
                                         class="content__tour-item-img"></img></a>
+
+                                        <?php 
+                                        if(isset($_SESSION['user_login']))
+                                        {
+                                            $check_tour_like_count = mysqli_num_rows(mysqli_query($mysqli, "SELECT * FROM tbl_tourdulich_liked WHERE id_nhanvien = '".$idnv."' AND id_tourdulich = '".$tour_moi_row['id_tourdulich']."'"));
+                                            if($check_tour_like_count > 0){
+                                                ?><div class="content__tour-item-like liked"><a href="modules/container/tour/tour_like_xuly.php?select=unlike&idtour=<?php echo $tour_moi_row['id_tourdulich']?>"><i class="fa-solid fa-heart"></i></a></div><?php
+                                            }
+                                            else{
+                                                ?><div class="content__tour-item-like"><a href="modules/container/tour/tour_like_xuly.php?select=like&idtour=<?php echo $tour_moi_row['id_tourdulich']?>"><i class="fa-solid fa-heart"></i></a></div><?php
+                                            }
+                                        ?>
+                                        <?php
+                                        }
+                                    ?>
+                                        
                                 <div class="content__tour-item-group">
                                     <h3 class="content__tour-item-heading">
                                         <?php echo $tour_moi_row['ten_tourdulich'] ?></h3>
@@ -110,7 +144,7 @@
                                     <div class="content__tour-item-group-btn">
                                         <a href="?select=tour&query=chitiet&idtour=<?php echo $tour_moi_row['id_tourdulich'] ?>"
                                             class="btn-s content__tour-item-group-btn-link">Xem chi tiết</a>
-                                        <a href="modules/container/tour/tour_dattour_xuly.php?dat_tour=1&idtour=<?php echo $tour_moi_row['id_tourdulich'] ?>&idnv=<?php echo $idnv ?>&tienhotro=<?php echo $tien_hotro?>"
+                                        <a href="modules/container/tour/tour_dattour_xuly.php?dat_tour=1&idtour=<?php echo $tour_moi_row['id_tourdulich'] ?>"
                                             class="btn-s btn-main content__tour-item-group-btn-link">Đặt Tour</a>
                                     </div>
                                 </div>
@@ -129,6 +163,21 @@
                                     class="content__tour-item-link"><img
                                         src="quanly/modules/container/quanly_tour/uploads/<?php echo $tour_moi_row['img_tourdulich'] ?>"
                                         class="content__tour-item-img"></img></a>
+
+                                        <?php 
+                                        if(isset($_SESSION['user_login']))
+                                        {
+                                            $check_tour_like_count = mysqli_num_rows(mysqli_query($mysqli, "SELECT * FROM tbl_tourdulich_liked WHERE id_nhanvien = '".$idnv."' AND id_tourdulich = '".$tour_moi_row['id_tourdulich']."'"));
+                                            if($check_tour_like_count > 0){
+                                                ?><div class="content__tour-item-like liked"><a href="modules/container/tour/tour_like_xuly.php?select=unlike&idtour=<?php echo $tour_moi_row['id_tourdulich']?>"><i class="fa-solid fa-heart"></i></a></div><?php
+                                            }
+                                            else{
+                                                ?><div class="content__tour-item-like"><a href="modules/container/tour/tour_like_xuly.php?select=like&idtour=<?php echo $tour_moi_row['id_tourdulich']?>"><i class="fa-solid fa-heart"></i></a></div><?php
+                                            }
+                                        ?>
+                                        <?php
+                                        }
+                                    ?>
                                 <div class="content__tour-item-group">
                                     <h3 class="content__tour-item-heading">
                                         <?php echo $tour_moi_row['ten_tourdulich'] ?></h3>
@@ -192,7 +241,7 @@
                             <div class="content__tour-item">
 
                                 <?php
-                                    if(strtotime($tour_moi_row['dangkytruoc_tourdulich']) > strtotime($today))
+                                    if(strtotime($tour_moi_row['dangkytruoc_tourdulich']) >= strtotime($today))
                                     {
                                         if($tour_moi_row['soluongdadangky_tourdulich'] == $tour_moi_row['soluongtoida_tourdulich'])
                                         {
@@ -221,6 +270,21 @@
                                     <img
                                         src="quanly/modules/container/quanly_tour/uploads/<?php echo $tour_moi_row['img_tourdulich'] ?>"
                                         class="content__tour-item-img"></img></a>
+
+                                        <?php 
+                                        if(isset($_SESSION['user_login']))
+                                        {
+                                            $check_tour_like_count = mysqli_num_rows(mysqli_query($mysqli, "SELECT * FROM tbl_tourdulich_liked WHERE id_nhanvien = '".$idnv."' AND id_tourdulich = '".$tour_moi_row['id_tourdulich']."'"));
+                                            if($check_tour_like_count > 0){
+                                                ?><div class="content__tour-item-like liked"><a href="modules/container/tour/tour_like_xuly.php?select=unlike&idtour=<?php echo $tour_moi_row['id_tourdulich']?>"><i class="fa-solid fa-heart"></i></a></div><?php
+                                            }
+                                            else{
+                                                ?><div class="content__tour-item-like"><a href="modules/container/tour/tour_like_xuly.php?select=like&idtour=<?php echo $tour_moi_row['id_tourdulich']?>"><i class="fa-solid fa-heart"></i></a></div><?php
+                                            }
+                                        ?>
+                                        <?php
+                                        }
+                                    ?>
                                 <div class="content__tour-item-group">
                                     <h3 class="content__tour-item-heading">
                                         <?php echo $tour_moi_row['ten_tourdulich'] ?></h3>
@@ -241,7 +305,7 @@
                                     <div class="content__tour-item-group-btn">
                                         <a href="?select=tour&query=chitiet&idtour=<?php echo $tour_moi_row['id_tourdulich'] ?>"
                                             class="btn-s content__tour-item-group-btn-link">Xem chi tiết</a>
-                                        <a href="modules/container/tour/tour_dattour_xuly.php?dat_tour=1&idtour=<?php echo $tour_moi_row['id_tourdulich'] ?>&idnv=<?php echo $idnv ?>&tienhotro=<?php echo $tien_hotro?>"
+                                        <a href="modules/container/tour/tour_dattour_xuly.php?dat_tour=1&idtour=<?php echo $tour_moi_row['id_tourdulich'] ?>"
                                             class="btn-s btn-main content__tour-item-group-btn-link">Đặt Tour</a>
                                     </div>
                                 </div>
@@ -260,6 +324,21 @@
                                     class="content__tour-item-link"><img
                                         src="quanly/modules/container/quanly_tour/uploads/<?php echo $tour_moi_row['img_tourdulich'] ?>"
                                         class="content__tour-item-img"></img></a>
+
+                                        <?php 
+                                        if(isset($_SESSION['user_login']))
+                                        {
+                                            $check_tour_like_count = mysqli_num_rows(mysqli_query($mysqli, "SELECT * FROM tbl_tourdulich_liked WHERE id_nhanvien = '".$idnv."' AND id_tourdulich = '".$tour_moi_row['id_tourdulich']."'"));
+                                            if($check_tour_like_count > 0){
+                                                ?><div class="content__tour-item-like liked"><a href="modules/container/tour/tour_like_xuly.php?select=unlike&idtour=<?php echo $tour_moi_row['id_tourdulich']?>"><i class="fa-solid fa-heart"></i></a></div><?php
+                                            }
+                                            else{
+                                                ?><div class="content__tour-item-like"><a href="modules/container/tour/tour_like_xuly.php?select=like&idtour=<?php echo $tour_moi_row['id_tourdulich']?>"><i class="fa-solid fa-heart"></i></a></div><?php
+                                            }
+                                        ?>
+                                        <?php
+                                        }
+                                    ?>
                                 <div class="content__tour-item-group">
                                     <h3 class="content__tour-item-heading">
                                         <?php echo $tour_moi_row['ten_tourdulich'] ?></h3>
@@ -323,7 +402,7 @@
                             <div class="content__tour-item">
 
                                 <?php
-                                    if(strtotime($tour_moi_row['dangkytruoc_tourdulich']) > strtotime($today))
+                                    if(strtotime($tour_moi_row['dangkytruoc_tourdulich']) >= strtotime($today))
                                     {
                                         if($tour_moi_row['soluongdadangky_tourdulich'] == $tour_moi_row['soluongtoida_tourdulich'])
                                         {
@@ -352,6 +431,21 @@
                                     <img
                                         src="quanly/modules/container/quanly_tour/uploads/<?php echo $tour_moi_row['img_tourdulich'] ?>"
                                         class="content__tour-item-img"></img></a>
+
+                                        <?php 
+                                        if(isset($_SESSION['user_login']))
+                                        {
+                                            $check_tour_like_count = mysqli_num_rows(mysqli_query($mysqli, "SELECT * FROM tbl_tourdulich_liked WHERE id_nhanvien = '".$idnv."' AND id_tourdulich = '".$tour_moi_row['id_tourdulich']."'"));
+                                            if($check_tour_like_count > 0){
+                                                ?><div class="content__tour-item-like liked"><a href="modules/container/tour/tour_like_xuly.php?select=unlike&idtour=<?php echo $tour_moi_row['id_tourdulich']?>"><i class="fa-solid fa-heart"></i></a></div><?php
+                                            }
+                                            else{
+                                                ?><div class="content__tour-item-like"><a href="modules/container/tour/tour_like_xuly.php?select=like&idtour=<?php echo $tour_moi_row['id_tourdulich']?>"><i class="fa-solid fa-heart"></i></a></div><?php
+                                            }
+                                        ?>
+                                        <?php
+                                        }
+                                    ?>
                                 <div class="content__tour-item-group">
                                     <h3 class="content__tour-item-heading">
                                         <?php echo $tour_moi_row['ten_tourdulich'] ?></h3>
@@ -372,7 +466,7 @@
                                     <div class="content__tour-item-group-btn">
                                         <a href="?select=tour&query=chitiet&idtour=<?php echo $tour_moi_row['id_tourdulich'] ?>"
                                             class="btn-s content__tour-item-group-btn-link">Xem chi tiết</a>
-                                        <a href="modules/container/tour/tour_dattour_xuly.php?dat_tour=1&idtour=<?php echo $tour_moi_row['id_tourdulich'] ?>&idnv=<?php echo $idnv ?>&tienhotro=<?php echo $tien_hotro?>"
+                                        <a href="modules/container/tour/tour_dattour_xuly.php?dat_tour=1&idtour=<?php echo $tour_moi_row['id_tourdulich'] ?>"
                                             class="btn-s btn-main content__tour-item-group-btn-link">Đặt Tour</a>
                                     </div>
                                 </div>
@@ -391,6 +485,21 @@
                                     class="content__tour-item-link"><img
                                         src="quanly/modules/container/quanly_tour/uploads/<?php echo $tour_moi_row['img_tourdulich'] ?>"
                                         class="content__tour-item-img"></img></a>
+
+                                        <?php 
+                                        if(isset($_SESSION['user_login']))
+                                        {
+                                            $check_tour_like_count = mysqli_num_rows(mysqli_query($mysqli, "SELECT * FROM tbl_tourdulich_liked WHERE id_nhanvien = '".$idnv."' AND id_tourdulich = '".$tour_moi_row['id_tourdulich']."'"));
+                                            if($check_tour_like_count > 0){
+                                                ?><div class="content__tour-item-like liked"><a href="modules/container/tour/tour_like_xuly.php?select=unlike&idtour=<?php echo $tour_moi_row['id_tourdulich']?>"><i class="fa-solid fa-heart"></i></a></div><?php
+                                            }
+                                            else{
+                                                ?><div class="content__tour-item-like"><a href="modules/container/tour/tour_like_xuly.php?select=like&idtour=<?php echo $tour_moi_row['id_tourdulich']?>"><i class="fa-solid fa-heart"></i></a></div><?php
+                                            }
+                                        ?>
+                                        <?php
+                                        }
+                                    ?>
                                 <div class="content__tour-item-group">
                                     <h3 class="content__tour-item-heading">
                                         <?php echo $tour_moi_row['ten_tourdulich'] ?></h3>
@@ -454,7 +563,7 @@
                             <div class="content__tour-item">
 
                                 <?php
-                                    if(strtotime($tour_moi_row['dangkytruoc_tourdulich']) > strtotime($today))
+                                    if(strtotime($tour_moi_row['dangkytruoc_tourdulich']) >= strtotime($today))
                                     {
                                         if($tour_moi_row['soluongdadangky_tourdulich'] == $tour_moi_row['soluongtoida_tourdulich'])
                                         {
@@ -483,6 +592,21 @@
                                     <img
                                         src="quanly/modules/container/quanly_tour/uploads/<?php echo $tour_moi_row['img_tourdulich'] ?>"
                                         class="content__tour-item-img"></img></a>
+
+                                        <?php 
+                                        if(isset($_SESSION['user_login']))
+                                        {
+                                            $check_tour_like_count = mysqli_num_rows(mysqli_query($mysqli, "SELECT * FROM tbl_tourdulich_liked WHERE id_nhanvien = '".$idnv."' AND id_tourdulich = '".$tour_moi_row['id_tourdulich']."'"));
+                                            if($check_tour_like_count > 0){
+                                                ?><div class="content__tour-item-like liked"><a href="modules/container/tour/tour_like_xuly.php?select=unlike&idtour=<?php echo $tour_moi_row['id_tourdulich']?>"><i class="fa-solid fa-heart"></i></a></div><?php
+                                            }
+                                            else{
+                                                ?><div class="content__tour-item-like"><a href="modules/container/tour/tour_like_xuly.php?select=like&idtour=<?php echo $tour_moi_row['id_tourdulich']?>"><i class="fa-solid fa-heart"></i></a></div><?php
+                                            }
+                                        ?>
+                                        <?php
+                                        }
+                                    ?>
                                 <div class="content__tour-item-group">
                                     <h3 class="content__tour-item-heading">
                                         <?php echo $tour_moi_row['ten_tourdulich'] ?></h3>
@@ -503,7 +627,7 @@
                                     <div class="content__tour-item-group-btn">
                                         <a href="?select=tour&query=chitiet&idtour=<?php echo $tour_moi_row['id_tourdulich'] ?>"
                                             class="btn-s content__tour-item-group-btn-link">Xem chi tiết</a>
-                                        <a href="modules/container/tour/tour_dattour_xuly.php?dat_tour=1&idtour=<?php echo $tour_moi_row['id_tourdulich'] ?>&idnv=<?php echo $idnv ?>&tienhotro=<?php echo $tien_hotro?>"
+                                        <a href="modules/container/tour/tour_dattour_xuly.php?dat_tour=1&idtour=<?php echo $tour_moi_row['id_tourdulich'] ?>"
                                             class="btn-s btn-main content__tour-item-group-btn-link">Đặt Tour</a>
                                     </div>
                                 </div>
@@ -522,6 +646,21 @@
                                     class="content__tour-item-link"><img
                                         src="quanly/modules/container/quanly_tour/uploads/<?php echo $tour_moi_row['img_tourdulich'] ?>"
                                         class="content__tour-item-img"></img></a>
+
+                                        <?php 
+                                        if(isset($_SESSION['user_login']))
+                                        {
+                                            $check_tour_like_count = mysqli_num_rows(mysqli_query($mysqli, "SELECT * FROM tbl_tourdulich_liked WHERE id_nhanvien = '".$idnv."' AND id_tourdulich = '".$tour_moi_row['id_tourdulich']."'"));
+                                            if($check_tour_like_count > 0){
+                                                ?><div class="content__tour-item-like liked"><a href="modules/container/tour/tour_like_xuly.php?select=unlike&idtour=<?php echo $tour_moi_row['id_tourdulich']?>"><i class="fa-solid fa-heart"></i></a></div><?php
+                                            }
+                                            else{
+                                                ?><div class="content__tour-item-like"><a href="modules/container/tour/tour_like_xuly.php?select=like&idtour=<?php echo $tour_moi_row['id_tourdulich']?>"><i class="fa-solid fa-heart"></i></a></div><?php
+                                            }
+                                        ?>
+                                        <?php
+                                        }
+                                    ?>
                                 <div class="content__tour-item-group">
                                     <h3 class="content__tour-item-heading">
                                         <?php echo $tour_moi_row['ten_tourdulich'] ?></h3>
@@ -585,7 +724,7 @@
                             <div class="content__tour-item">
 
                                 <?php
-                                    if(strtotime($tour_moi_row['dangkytruoc_tourdulich']) > strtotime($today))
+                                    if(strtotime($tour_moi_row['dangkytruoc_tourdulich']) >= strtotime($today))
                                     {
                                         if($tour_moi_row['soluongdadangky_tourdulich'] == $tour_moi_row['soluongtoida_tourdulich'])
                                         {
@@ -614,6 +753,21 @@
                                     <img
                                         src="quanly/modules/container/quanly_tour/uploads/<?php echo $tour_moi_row['img_tourdulich'] ?>"
                                         class="content__tour-item-img"></img></a>
+
+                                        <?php 
+                                        if(isset($_SESSION['user_login']))
+                                        {
+                                            $check_tour_like_count = mysqli_num_rows(mysqli_query($mysqli, "SELECT * FROM tbl_tourdulich_liked WHERE id_nhanvien = '".$idnv."' AND id_tourdulich = '".$tour_moi_row['id_tourdulich']."'"));
+                                            if($check_tour_like_count > 0){
+                                                ?><div class="content__tour-item-like liked"><a href="modules/container/tour/tour_like_xuly.php?select=unlike&idtour=<?php echo $tour_moi_row['id_tourdulich']?>"><i class="fa-solid fa-heart"></i></a></div><?php
+                                            }
+                                            else{
+                                                ?><div class="content__tour-item-like"><a href="modules/container/tour/tour_like_xuly.php?select=like&idtour=<?php echo $tour_moi_row['id_tourdulich']?>"><i class="fa-solid fa-heart"></i></a></div><?php
+                                            }
+                                        ?>
+                                        <?php
+                                        }
+                                    ?>
                                 <div class="content__tour-item-group">
                                     <h3 class="content__tour-item-heading">
                                         <?php echo $tour_moi_row['ten_tourdulich'] ?></h3>
@@ -634,7 +788,7 @@
                                     <div class="content__tour-item-group-btn">
                                         <a href="?select=tour&query=chitiet&idtour=<?php echo $tour_moi_row['id_tourdulich'] ?>"
                                             class="btn-s content__tour-item-group-btn-link">Xem chi tiết</a>
-                                        <a href="modules/container/tour/tour_dattour_xuly.php?dat_tour=1&idtour=<?php echo $tour_moi_row['id_tourdulich'] ?>&idnv=<?php echo $idnv ?>&tienhotro=<?php echo $tien_hotro?>"
+                                        <a href="modules/container/tour/tour_dattour_xuly.php?dat_tour=1&idtour=<?php echo $tour_moi_row['id_tourdulich'] ?>"
                                             class="btn-s btn-main content__tour-item-group-btn-link">Đặt Tour</a>
                                     </div>
                                 </div>
@@ -653,6 +807,21 @@
                                     class="content__tour-item-link"><img
                                         src="quanly/modules/container/quanly_tour/uploads/<?php echo $tour_moi_row['img_tourdulich'] ?>"
                                         class="content__tour-item-img"></img></a>
+
+                                        <?php 
+                                        if(isset($_SESSION['user_login']))
+                                        {
+                                            $check_tour_like_count = mysqli_num_rows(mysqli_query($mysqli, "SELECT * FROM tbl_tourdulich_liked WHERE id_nhanvien = '".$idnv."' AND id_tourdulich = '".$tour_moi_row['id_tourdulich']."'"));
+                                            if($check_tour_like_count > 0){
+                                                ?><div class="content__tour-item-like liked"><a href="modules/container/tour/tour_like_xuly.php?select=unlike&idtour=<?php echo $tour_moi_row['id_tourdulich']?>"><i class="fa-solid fa-heart"></i></a></div><?php
+                                            }
+                                            else{
+                                                ?><div class="content__tour-item-like"><a href="modules/container/tour/tour_like_xuly.php?select=like&idtour=<?php echo $tour_moi_row['id_tourdulich']?>"><i class="fa-solid fa-heart"></i></a></div><?php
+                                            }
+                                        ?>
+                                        <?php
+                                        }
+                                    ?>
                                 <div class="content__tour-item-group">
                                     <h3 class="content__tour-item-heading">
                                         <?php echo $tour_moi_row['ten_tourdulich'] ?></h3>
@@ -716,7 +885,7 @@
                             <div class="content__tour-item">
 
                                 <?php
-                                    if(strtotime($tour_moi_row['dangkytruoc_tourdulich']) > strtotime($today))
+                                    if(strtotime($tour_moi_row['dangkytruoc_tourdulich']) >= strtotime($today))
                                     {
                                         if($tour_moi_row['soluongdadangky_tourdulich'] == $tour_moi_row['soluongtoida_tourdulich'])
                                         {
@@ -745,6 +914,21 @@
                                     <img
                                         src="quanly/modules/container/quanly_tour/uploads/<?php echo $tour_moi_row['img_tourdulich'] ?>"
                                         class="content__tour-item-img"></img></a>
+
+                                        <?php 
+                                        if(isset($_SESSION['user_login']))
+                                        {
+                                            $check_tour_like_count = mysqli_num_rows(mysqli_query($mysqli, "SELECT * FROM tbl_tourdulich_liked WHERE id_nhanvien = '".$idnv."' AND id_tourdulich = '".$tour_moi_row['id_tourdulich']."'"));
+                                            if($check_tour_like_count > 0){
+                                                ?><div class="content__tour-item-like liked"><a href="modules/container/tour/tour_like_xuly.php?select=unlike&idtour=<?php echo $tour_moi_row['id_tourdulich']?>"><i class="fa-solid fa-heart"></i></a></div><?php
+                                            }
+                                            else{
+                                                ?><div class="content__tour-item-like"><a href="modules/container/tour/tour_like_xuly.php?select=like&idtour=<?php echo $tour_moi_row['id_tourdulich']?>"><i class="fa-solid fa-heart"></i></a></div><?php
+                                            }
+                                        ?>
+                                        <?php
+                                        }
+                                    ?>
                                 <div class="content__tour-item-group">
                                     <h3 class="content__tour-item-heading">
                                         <?php echo $tour_moi_row['ten_tourdulich'] ?></h3>
@@ -765,7 +949,7 @@
                                     <div class="content__tour-item-group-btn">
                                         <a href="?select=tour&query=chitiet&idtour=<?php echo $tour_moi_row['id_tourdulich'] ?>"
                                             class="btn-s content__tour-item-group-btn-link">Xem chi tiết</a>
-                                        <a href="modules/container/tour/tour_dattour_xuly.php?dat_tour=1&idtour=<?php echo $tour_moi_row['id_tourdulich'] ?>&idnv=<?php echo $idnv ?>&tienhotro=<?php echo $tien_hotro?>"
+                                        <a href="modules/container/tour/tour_dattour_xuly.php?dat_tour=1&idtour=<?php echo $tour_moi_row['id_tourdulich'] ?>"
                                             class="btn-s btn-main content__tour-item-group-btn-link">Đặt Tour</a>
                                     </div>
                                 </div>
@@ -784,6 +968,21 @@
                                     class="content__tour-item-link"><img
                                         src="quanly/modules/container/quanly_tour/uploads/<?php echo $tour_moi_row['img_tourdulich'] ?>"
                                         class="content__tour-item-img"></img></a>
+
+                                        <?php 
+                                        if(isset($_SESSION['user_login']))
+                                        {
+                                            $check_tour_like_count = mysqli_num_rows(mysqli_query($mysqli, "SELECT * FROM tbl_tourdulich_liked WHERE id_nhanvien = '".$idnv."' AND id_tourdulich = '".$tour_moi_row['id_tourdulich']."'"));
+                                            if($check_tour_like_count > 0){
+                                                ?><div class="content__tour-item-like liked"><a href="modules/container/tour/tour_like_xuly.php?select=unlike&idtour=<?php echo $tour_moi_row['id_tourdulich']?>"><i class="fa-solid fa-heart"></i></a></div><?php
+                                            }
+                                            else{
+                                                ?><div class="content__tour-item-like"><a href="modules/container/tour/tour_like_xuly.php?select=like&idtour=<?php echo $tour_moi_row['id_tourdulich']?>"><i class="fa-solid fa-heart"></i></a></div><?php
+                                            }
+                                        ?>
+                                        <?php
+                                        }
+                                    ?>
                                 <div class="content__tour-item-group">
                                     <h3 class="content__tour-item-heading">
                                         <?php echo $tour_moi_row['ten_tourdulich'] ?></h3>
@@ -847,7 +1046,7 @@
                             <div class="content__tour-item">
 
                                 <?php
-                                    if(strtotime($tour_moi_row['dangkytruoc_tourdulich']) > strtotime($today))
+                                    if(strtotime($tour_moi_row['dangkytruoc_tourdulich']) >= strtotime($today))
                                     {
                                         if($tour_moi_row['soluongdadangky_tourdulich'] == $tour_moi_row['soluongtoida_tourdulich'])
                                         {
@@ -876,6 +1075,21 @@
                                     <img
                                         src="quanly/modules/container/quanly_tour/uploads/<?php echo $tour_moi_row['img_tourdulich'] ?>"
                                         class="content__tour-item-img"></img></a>
+
+                                        <?php 
+                                        if(isset($_SESSION['user_login']))
+                                        {
+                                            $check_tour_like_count = mysqli_num_rows(mysqli_query($mysqli, "SELECT * FROM tbl_tourdulich_liked WHERE id_nhanvien = '".$idnv."' AND id_tourdulich = '".$tour_moi_row['id_tourdulich']."'"));
+                                            if($check_tour_like_count > 0){
+                                                ?><div class="content__tour-item-like liked"><a href="modules/container/tour/tour_like_xuly.php?select=unlike&idtour=<?php echo $tour_moi_row['id_tourdulich']?>"><i class="fa-solid fa-heart"></i></a></div><?php
+                                            }
+                                            else{
+                                                ?><div class="content__tour-item-like"><a href="modules/container/tour/tour_like_xuly.php?select=like&idtour=<?php echo $tour_moi_row['id_tourdulich']?>"><i class="fa-solid fa-heart"></i></a></div><?php
+                                            }
+                                        ?>
+                                        <?php
+                                        }
+                                    ?>
                                 <div class="content__tour-item-group">
                                     <h3 class="content__tour-item-heading">
                                         <?php echo $tour_moi_row['ten_tourdulich'] ?></h3>
@@ -896,7 +1110,7 @@
                                     <div class="content__tour-item-group-btn">
                                         <a href="?select=tour&query=chitiet&idtour=<?php echo $tour_moi_row['id_tourdulich'] ?>"
                                             class="btn-s content__tour-item-group-btn-link">Xem chi tiết</a>
-                                        <a href="modules/container/tour/tour_dattour_xuly.php?dat_tour=1&idtour=<?php echo $tour_moi_row['id_tourdulich'] ?>&idnv=<?php echo $idnv ?>&tienhotro=<?php echo $tien_hotro?>"
+                                        <a href="modules/container/tour/tour_dattour_xuly.php?dat_tour=1&idtour=<?php echo $tour_moi_row['id_tourdulich'] ?>"
                                             class="btn-s btn-main content__tour-item-group-btn-link">Đặt Tour</a>
                                     </div>
                                 </div>
@@ -915,6 +1129,21 @@
                                     class="content__tour-item-link"><img
                                         src="quanly/modules/container/quanly_tour/uploads/<?php echo $tour_moi_row['img_tourdulich'] ?>"
                                         class="content__tour-item-img"></img></a>
+
+                                        <?php 
+                                        if(isset($_SESSION['user_login']))
+                                        {
+                                            $check_tour_like_count = mysqli_num_rows(mysqli_query($mysqli, "SELECT * FROM tbl_tourdulich_liked WHERE id_nhanvien = '".$idnv."' AND id_tourdulich = '".$tour_moi_row['id_tourdulich']."'"));
+                                            if($check_tour_like_count > 0){
+                                                ?><div class="content__tour-item-like liked"><a href="modules/container/tour/tour_like_xuly.php?select=unlike&idtour=<?php echo $tour_moi_row['id_tourdulich']?>"><i class="fa-solid fa-heart"></i></a></div><?php
+                                            }
+                                            else{
+                                                ?><div class="content__tour-item-like"><a href="modules/container/tour/tour_like_xuly.php?select=like&idtour=<?php echo $tour_moi_row['id_tourdulich']?>"><i class="fa-solid fa-heart"></i></a></div><?php
+                                            }
+                                        ?>
+                                        <?php
+                                        }
+                                    ?>
                                 <div class="content__tour-item-group">
                                     <h3 class="content__tour-item-heading">
                                         <?php echo $tour_moi_row['ten_tourdulich'] ?></h3>
@@ -978,7 +1207,7 @@
                             <div class="content__tour-item">
 
                                 <?php
-                                    if(strtotime($tour_moi_row['dangkytruoc_tourdulich']) > strtotime($today))
+                                    if(strtotime($tour_moi_row['dangkytruoc_tourdulich']) >= strtotime($today))
                                     {
                                         if($tour_moi_row['soluongdadangky_tourdulich'] == $tour_moi_row['soluongtoida_tourdulich'])
                                         {
@@ -1007,6 +1236,21 @@
                                     <img
                                         src="quanly/modules/container/quanly_tour/uploads/<?php echo $tour_moi_row['img_tourdulich'] ?>"
                                         class="content__tour-item-img"></img></a>
+
+                                        <?php 
+                                        if(isset($_SESSION['user_login']))
+                                        {
+                                            $check_tour_like_count = mysqli_num_rows(mysqli_query($mysqli, "SELECT * FROM tbl_tourdulich_liked WHERE id_nhanvien = '".$idnv."' AND id_tourdulich = '".$tour_moi_row['id_tourdulich']."'"));
+                                            if($check_tour_like_count > 0){
+                                                ?><div class="content__tour-item-like liked"><a href="modules/container/tour/tour_like_xuly.php?select=unlike&idtour=<?php echo $tour_moi_row['id_tourdulich']?>"><i class="fa-solid fa-heart"></i></a></div><?php
+                                            }
+                                            else{
+                                                ?><div class="content__tour-item-like"><a href="modules/container/tour/tour_like_xuly.php?select=like&idtour=<?php echo $tour_moi_row['id_tourdulich']?>"><i class="fa-solid fa-heart"></i></a></div><?php
+                                            }
+                                        ?>
+                                        <?php
+                                        }
+                                    ?>
                                 <div class="content__tour-item-group">
                                     <h3 class="content__tour-item-heading">
                                         <?php echo $tour_moi_row['ten_tourdulich'] ?></h3>
@@ -1027,7 +1271,7 @@
                                     <div class="content__tour-item-group-btn">
                                         <a href="?select=tour&query=chitiet&idtour=<?php echo $tour_moi_row['id_tourdulich'] ?>"
                                             class="btn-s content__tour-item-group-btn-link">Xem chi tiết</a>
-                                        <a href="modules/container/tour/tour_dattour_xuly.php?dat_tour=1&idtour=<?php echo $tour_moi_row['id_tourdulich'] ?>&idnv=<?php echo $idnv ?>&tienhotro=<?php echo $tien_hotro?>"
+                                        <a href="modules/container/tour/tour_dattour_xuly.php?dat_tour=1&idtour=<?php echo $tour_moi_row['id_tourdulich'] ?>"
                                             class="btn-s btn-main content__tour-item-group-btn-link">Đặt Tour</a>
                                     </div>
                                 </div>
@@ -1046,6 +1290,21 @@
                                     class="content__tour-item-link"><img
                                         src="quanly/modules/container/quanly_tour/uploads/<?php echo $tour_moi_row['img_tourdulich'] ?>"
                                         class="content__tour-item-img"></img></a>
+
+                                        <?php 
+                                        if(isset($_SESSION['user_login']))
+                                        {
+                                            $check_tour_like_count = mysqli_num_rows(mysqli_query($mysqli, "SELECT * FROM tbl_tourdulich_liked WHERE id_nhanvien = '".$idnv."' AND id_tourdulich = '".$tour_moi_row['id_tourdulich']."'"));
+                                            if($check_tour_like_count > 0){
+                                                ?><div class="content__tour-item-like liked"><a href="modules/container/tour/tour_like_xuly.php?select=unlike&idtour=<?php echo $tour_moi_row['id_tourdulich']?>"><i class="fa-solid fa-heart"></i></a></div><?php
+                                            }
+                                            else{
+                                                ?><div class="content__tour-item-like"><a href="modules/container/tour/tour_like_xuly.php?select=like&idtour=<?php echo $tour_moi_row['id_tourdulich']?>"><i class="fa-solid fa-heart"></i></a></div><?php
+                                            }
+                                        ?>
+                                        <?php
+                                        }
+                                    ?>
                                 <div class="content__tour-item-group">
                                     <h3 class="content__tour-item-heading">
                                         <?php echo $tour_moi_row['ten_tourdulich'] ?></h3>
@@ -1091,9 +1350,11 @@
                     </div>
                     <?php
                 }
-            }
             ?>
             </div>
         </section>
     </div>
 </div>
+<?php
+}
+?>

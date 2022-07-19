@@ -1,4 +1,9 @@
 <?php
+    if(!isset($_SESSION['user_login']))
+    {
+        header('Location:index.php');
+    }
+
     if(isset($_SESSION['ticket'])){
         $tongnguoi = 0;
         $tongtien = 0;
@@ -121,7 +126,7 @@
                         đ</h3>
                 </div>
 
-                <form action="modules/container/tour/tour_thanhtoan_xuly.php?idnv=<?php echo $idnv ?>&idtour=<?php echo $idtour ?>&idhotrokinhphi=<?php echo $id_hotrokinhphi?>&tienhotro=<?php echo $tien_hotro?>" method="POST">
+                <form action="modules/container/tour/tour_thanhtoan_xuly.php" method="POST">
                     <input type="submit" name="thanhtoan" value="Tiếp tục"
                         class="btn-m btn-main container-cart-btn"></input>
                 </form>

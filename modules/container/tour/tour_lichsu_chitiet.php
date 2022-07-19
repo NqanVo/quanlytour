@@ -1,4 +1,8 @@
 <?php
+    if(!isset($_SESSION['user_login']))
+    {
+        header('Location:index.php');
+    }
 
     $iddangkytour = $_GET['iddangkytour'];
     $dangkytour_chitiet_select = "SELECT * FROM tbl_dangkytour_chitiet WHERE tbl_dangkytour_chitiet.id_dangkytour = '".$iddangkytour."'";
@@ -142,7 +146,7 @@
                                         if($dangkytour_chitiet_row['status_dangkytour_chitiet'] == 1) 
                                         {
                                     ?>
-                                    <a href="modules/container/tour/tour_lichsu_chitiet_xuly_huy.php?tacvu=xoa&idvechitiet=<?php echo $dangkytour_chitiet_row['id_dangkytour_chitiet'] ?>&idtour=<?php echo $dangkytour_chitiet_row['id_tourdulich'] ?>&idnhanhotro=<?php echo $id_nhan_hotro?>&idhotrokinhphi=<?php echo $id_hotrokinhphi?>&idnv=<?php echo $idnv?>&thamnien=<?php echo $thamnien?>"
+                                    <a href="modules/container/tour/tour_lichsu_chitiet_xuly_huy.php?tacvu=xoa&idvechitiet=<?php echo $dangkytour_chitiet_row['id_dangkytour_chitiet'] ?>&idtour=<?php echo $dangkytour_chitiet_row['id_tourdulich'] ?>"
                                         onclick="return confirm('Bạn chắc chắn muốn hủy vé?');" class="a-defaul">
                                         <i class="icon-s ti-trash error-txt"></i>
                                     </a>
@@ -150,7 +154,7 @@
                                         }
                                         else{
                                     ?>
-                                    <a href="modules/container/tour/tour_lichsu_chitiet_xuly_datlai.php?tacvu=datlai&idvechitiet=<?php echo $dangkytour_chitiet_row['id_dangkytour_chitiet'] ?>&idtour=<?php echo $dangkytour_chitiet_row['id_tourdulich'] ?>&idhotrokinhphi=<?php echo $id_hotrokinhphi?>&idnv=<?php echo $idnv?>&thamnien=<?php echo $thamnien?>"
+                                    <a href="modules/container/tour/tour_lichsu_chitiet_xuly_datlai.php?tacvu=datlai&idvechitiet=<?php echo $dangkytour_chitiet_row['id_dangkytour_chitiet'] ?>&idtour=<?php echo $dangkytour_chitiet_row['id_tourdulich'] ?>"
                                         onclick="return confirm('Bạn muốn đặt lại vé?');" class="a-defaul">
                                         <i class="icon-s ti-loop warring-txt"></i>
                                     </a>

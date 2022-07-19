@@ -1,8 +1,18 @@
 <?php 
     $idtour = $_GET['idtour'];
 
-    $tour_delete = "DELETE FROM tbl_tourdulich WHERE tbl_tourdulich.id_tourdulich ='".$idtour."'";
-    $tour_query = mysqli_query($mysqli, $tour_delete);
+    //check xem có ai dang dk tour không.
+    $tour_select_query = mysqli_query($mysqli,"SELECT * FROM tbl_tourdulich WHERE id_tourdulich = '".$idtour."' AND soluongdadangky_tourdulich > '0'");
+    $tour_select_count = mysqli_num_rows($tour_select_query);
+    if($tour_select_count > 0){
+        $_SESSION['tour_cant_delete'] = 'rewre';
+        header("Location:index.php?quanly=tour&query=chitiet&idtour=$idtour");
+    }
+    else{
+        $tour_delete = "DELETE FROM tbl_tourdulich WHERE tbl_tourdulich.id_tourdulich ='".$idtour."'";
+        $tour_query = mysqli_query($mysqli, $tour_delete);
+    }
+    
 ?>
 
 <div class="notification-form">

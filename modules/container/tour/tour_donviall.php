@@ -32,7 +32,7 @@
                         <div class="content__tour-item">
 
                             <?php
-                                if(strtotime($tour_theo_donvi_row['dangkytruoc_tourdulich']) > strtotime($today))
+                                if(strtotime($tour_theo_donvi_row['dangkytruoc_tourdulich']) >= strtotime($today))
                                 {
                                     if($tour_theo_donvi_row['soluongdadangky_tourdulich'] == $tour_theo_donvi_row['soluongtoida_tourdulich'])
                                     {
@@ -61,6 +61,21 @@
                                 <img
                                     src="quanly/modules/container/quanly_tour/uploads/<?php echo $tour_theo_donvi_row['img_tourdulich'] ?>"
                                     class="content__tour-item-img"></img></a>
+
+                            <?php 
+                                if(isset($_SESSION['user_login']))
+                                {
+                                    $check_tour_like_count = mysqli_num_rows(mysqli_query($mysqli, "SELECT * FROM tbl_tourdulich_liked WHERE id_nhanvien = '".$idnv."' AND id_tourdulich = '".$tour_theo_donvi_row['id_tourdulich']."'"));
+                                    if($check_tour_like_count > 0){
+                                        ?><div class="content__tour-item-like liked"><a href="modules/container/tour/tour_like_xuly.php?select=unlike&idtour=<?php echo $tour_theo_donvi_row['id_tourdulich']?>"><i class="fa-solid fa-heart"></i></a></div><?php
+                                    }
+                                    else{
+                                        ?><div class="content__tour-item-like"><a href="modules/container/tour/tour_like_xuly.php?select=like&idtour=<?php echo $tour_theo_donvi_row['id_tourdulich']?>"><i class="fa-solid fa-heart"></i></a></div><?php
+                                    }
+                                ?>
+                                <?php
+                                }
+                            ?>
                             <div class="content__tour-item-group">
                                 <h3 class="content__tour-item-heading">
                                     <?php echo $tour_theo_donvi_row['ten_tourdulich'] ?></h3>
@@ -76,12 +91,11 @@
                                     <?php echo date("d/m/Y", strtotime($tour_theo_donvi_row['dangkytruoc_tourdulich'])); ?>
                                 </p>
                                 <p class="content__tour-item-group-text">Đã đăng ký:
-                                    <?php echo $tour_theo_donvi_row['soluongdadangky_tourdulich'] ?> /
-                                    <?php echo $tour_theo_donvi_row['soluongtoida_tourdulich'] ?>
+                                    <?php echo $tour_theo_donvi_row['soluongdadangky_tourdulich'] ?>
                                 <div class="content__tour-item-group-btn">
                                     <a href="?select=tour&query=chitiet&idtour=<?php echo $tour_theo_donvi_row['id_tourdulich'] ?>"
                                         class="btn-s content__tour-item-group-btn-link">Xem chi tiết</a>
-                                    <a href="modules/container/tour/tour_dattour_xuly.php?dat_tour=1&idtour=<?php echo $tour_theo_donvi_row['id_tourdulich'] ?>&idnv=<?php echo $idnv ?>&tienhotro=<?php echo $tien_hotro?>"
+                                    <a href="modules/container/tour/tour_dattour_xuly.php?dat_tour=1&idtour=<?php echo $tour_theo_donvi_row['id_tourdulich'] ?>"
                                         class="btn-s btn-main content__tour-item-group-btn-link">Đặt Tour</a>
                                 </div>
                             </div>
@@ -98,12 +112,6 @@
                     if(isset($_SESSION['user_login']))
                     {
                 ?>
-
-                <!-- <div class="col l-12 c-12">
-                    <div class="content__label center">
-                        <a href="?select=tour&query=donviall" class="btn-s btn-main">Xem thêm</a>
-                    </div>
-                </div> -->
                 <?php
                     }
                     else{

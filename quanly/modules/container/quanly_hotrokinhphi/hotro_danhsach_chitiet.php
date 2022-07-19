@@ -1,8 +1,14 @@
 <?php
+    use Carbon\Carbon;
+    use Carbon\CarbonInterval;
+    $today = Carbon::now('Asia/Ho_Chi_Minh')->toDateString();
+
     $idhotro = $_GET['idhotro'];
     $danhsach_hotro_chitiet_query = mysqli_query($mysqli, "SELECT * FROM tbl_hotro_kinhphi_chitiet2 WHERE tbl_hotro_kinhphi_chitiet2.id_hotro_kinhphi = '".$idhotro."'");
     $danhsach_hotro_query = mysqli_query($mysqli,"SELECT * FROM tbl_hotro_kinhphi WHERE id_hotro_kinhphi = '".$idhotro."'");
     $danhsach_hotro_row = mysqli_fetch_array($danhsach_hotro_query);
+
+    $danhsach_nhanvien_nhan = mysqli_query($mysqli,"SELECT * FROM tbl_nhan_hotro WHERE id_hotro_kinhphi = '".$idhotro."'");
 ?>
 
 <!-- danh sach phòng ban -->

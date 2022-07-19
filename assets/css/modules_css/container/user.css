@@ -22,6 +22,9 @@
 .container_information-gruop-btn-item{
     color: var(--color-white);
 }
+.container_information-gruop-btn-item-liked{
+    display: none;
+}
 .container_information-gruop-btn-admin{
     margin-left: 0;
 }

@@ -9,7 +9,10 @@ $donvi_select = "SELECT * FROM tbl_donvi WHERE tbl_donvi.id_donvi = '".$iddv."'"
 $donvi_query = mysqli_query($mysqli, $donvi_select);
 $donvi_row = mysqli_fetch_array($donvi_query);
 
-
+if(isset($_SESSION['tour_cant_delete'])){
+    unset($_SESSION['tour_cant_delete']);
+    echo '<script>window.alert("Tour đang xóa đã có người đăng kí, vui lòng kiểm tra lại!");</script>';
+}
 ?>
 
 
@@ -72,8 +75,7 @@ $donvi_row = mysqli_fetch_array($donvi_query);
                         </p>
                         <p class="content__body-item-group-text">
                             <i class="fa-solid fa-ticket"></i>
-                            <span> Số lượng: <?php echo $tour_row['soluongdadangky_tourdulich'] ?> /
-                                <?php echo $tour_row['soluongtoida_tourdulich'] ?></span>
+                            <span> Số lượng đã đăng ký: <?php echo $tour_row['soluongdadangky_tourdulich'] ?></span>
                         </p>
                         <p class="content__body-detail__group-text">
                             <i class="fa-solid fa-briefcase"></i>

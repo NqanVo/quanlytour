@@ -7,9 +7,12 @@
     $today = Carbon::now('Asia/Ho_Chi_Minh')->toDateString();
     $idtour = $_GET['idtour'];
     $idvechitiet= $_GET['idvechitiet'];
-    $idnv = $_GET['idnv'];
-    $idhotrokinhphi = $_GET['idhotrokinhphi'];
-    $thamnien = $_GET['thamnien'];
+
+    foreach($_SESSION['thongtin_user'] as $key => $value){
+        $idnv = $value['id_nhanvien'];
+        $idhotrokinhphi = $value['id_hotrokinhphi'];
+        $thamnien = $value['thamnien'];
+    }
 
     //lay sl ve trong tour
     $tour_select = "SELECT * FROM tbl_tourdulich WHERE tbl_tourdulich.id_tourdulich = '".$idtour."'";

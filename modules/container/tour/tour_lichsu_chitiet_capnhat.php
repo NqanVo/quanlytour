@@ -1,4 +1,9 @@
 <?php
+    if(!isset($_SESSION['user_login']))
+    {
+        header('Location:index.php');
+    }
+
     $iddangkytour = $_GET['iddangkytour'];
     $idvechitiet = $_GET['idvechitiet'];
 

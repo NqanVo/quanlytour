@@ -11,6 +11,12 @@
     use Carbon\Carbon;
     use Carbon\CarbonInterval;
     $today = Carbon::now('Asia/Ho_Chi_Minh')->toDateString();
+
+    if(isset($_SESSION['khongcungdonvi'])){
+        unset($_SESSION['khongcungdonvi']);
+        echo '<script>window.alert("Tour này không thuộc đơn vị bạn!");</script>';
+    }
+    
 ?>
 
 
@@ -24,15 +30,15 @@
             </div>
             <div class="col l-6 c-6 right">
                 <p>Chi tiết tour</p>
-                <a href="quanly/modules/container/quanly_tour/tour_download_chitiet.php?namefile=<?php echo $tour_chitiet_row['chitiet_tourdulich']?>" class="btn-s btn-main container-detail-btn-back"><i
-                        class="ti-download"></i></a>
+                <a href="quanly/modules/container/quanly_tour/tour_download_chitiet.php?namefile=<?php echo $tour_chitiet_row['chitiet_tourdulich']?>"
+                    class="btn-s btn-main container-detail-btn-back"><i class="ti-download"></i></a>
             </div>
         </div>
         <div class="row">
             <div class="col l-6 c-12">
                 <div class="container-detail-heading">
                     <img src="quanly/modules/container/quanly_tour/uploads/<?php echo $tour_chitiet_row['img_tourdulich'] ?>"
-                        alt="" class="container-detail-heading-img">
+                        alt="" id="img-main" class="container-detail-heading-img">
                 </div>
             </div>
             <div class="col l-6 c-12">
@@ -49,23 +55,22 @@
                         <p class="container-detail-heading-group-text">Đăng ký trước:
                             <?php echo date("d/m/Y", strtotime($tour_chitiet_row['dangkytruoc_tourdulich'])); ?></p>
                         <p class="content__tour-item-group-text">Đã đăng ký:
-                            <?php echo $tour_chitiet_row['soluongdadangky_tourdulich'] ?> /
-                            <?php echo $tour_chitiet_row['soluongtoida_tourdulich'] ?>
+                            <?php echo $tour_chitiet_row['soluongdadangky_tourdulich'] ?>
                         <p class="container-detail-heading-group-text">Tour đơn vị:
                             <?php if($iddv_tour == 0){echo 'Tất cả';} else {echo $tour_donvi_row['ten_donvi'];} ?></p>
                     </div>
                     <div class="row">
                         <div class="col l-4 c-4">
-                            <img src="quanly/modules/container/quanly_tour/uploads/<?php echo $tour_chitiet_row['img_tourdulich'] ?>"
-                                class="container-detail-heading-img-mini">
+                            <img src="https://static.kinhtedothi.vn/images/upload/2022/03/24/halongnmoi.png"
+                                class="container-detail-heading-img-mini" id="1" onclick="changeImage('1')">
+                        </div>
+                        <div class="col l-4 c-4">
+                            <img src="http://baobariavungtau.com.vn/dataimages/202112/original/images1690461_vt.jpg"
+                                class="container-detail-heading-img-mini" id="2" onclick="changeImage('2')">
                         </div>
                         <div class="col l-4 c-4">
                             <img src="quanly/modules/container/quanly_tour/uploads/<?php echo $tour_chitiet_row['img_tourdulich'] ?>"
-                                class="container-detail-heading-img-mini">
-                        </div>
-                        <div class="col l-4 c-4">
-                            <img src="quanly/modules/container/quanly_tour/uploads/<?php echo $tour_chitiet_row['img_tourdulich'] ?>"
-                                class="container-detail-heading-img-mini">
+                                class="container-detail-heading-img-mini" id="3" onclick="changeImage('3')">
                         </div>
                     </div>
                     <?php 
@@ -74,24 +79,26 @@
                             if(strtotime($tour_chitiet_row['dangkytruoc_tourdulich']) < strtotime($today) || $tour_chitiet_row['soluongdadangky_tourdulich'] == $tour_chitiet_row['soluongtoida_tourdulich'] )
                             {
                                 ?>
-                                <a href="modules/container/tour/tour_dattour_xuly.php?dat_tour=1&idtour=<?php echo $tour_chitiet_row['id_tourdulich'] ?>&idnv=<?php echo $idnv ?>"
-                                    class="btn-m btn-main disabled-btn">Đặt Tour Ngay</a>
-                                <?php
+                    <a href="modules/container/tour/tour_dattour_xuly.php?dat_tour=1&idtour=<?php echo $tour_chitiet_row['id_tourdulich'] ?>"
+                        class="btn-m btn-main disabled-btn">Đặt Tour Ngay</a>
+
+                    <?php
                             }
                             else
                             {
                                 ?>
-                                <a href="modules/container/tour/tour_dattour_xuly.php?dat_tour=1&idtour=<?php echo $tour_chitiet_row['id_tourdulich'] ?>&idnv=<?php echo $idnv ?>&tienhotro=<?php echo $tien_hotro?>"
-                                    class="btn-m btn-main">Đặt Tour Ngay</a>
-                                <?php
+                    <a href="modules/container/tour/tour_dattour_xuly.php?dat_tour=1&idtour=<?php echo $tour_chitiet_row['id_tourdulich'] ?>"
+                        class="btn-m btn-main">Đặt Tour Ngay</a>
+
+                    <?php
                             }
                         }
                         else
                         {
                             ?>
-                            <a href="?select=dangnhap&query=1" class="btn-m btn-main">Đăng
-                                nhập</a>
-                            <?php
+                    <a href="?select=dangnhap&query=1" class="btn-m btn-main">Đăng
+                        nhập</a>
+                    <?php
                         }
                         ?>
                 </div>
@@ -118,3 +125,27 @@
         </div>
     </div>
 </div>
+
+<!-- <script>
+$(document).ready(function() {
+    $('#dattour_ngay').on('click', function() {
+        var dattour_ngay = "dattour_ngay";
+        var idtour = "<?php echo $tour_chitiet_row['id_tourdulich'] ?>";
+        var idnv = "<?php echo $idnv ?>";
+        var tienhotro = "<?php echo $tien_hotro?>";
+        $.ajax({
+            url: "modules/container/tour/tour_dattour_xuly.php",
+            method: "POST",
+            data: {
+                dattour_ngay: dattour_ngay,
+                idtour_ajax: idtour,
+                idnv_ajax: idnv,
+                tienhotro_ajax: tienhotro,
+            },
+            success: function(data) {
+                
+            }
+        });
+    });
+})
+</script> -->

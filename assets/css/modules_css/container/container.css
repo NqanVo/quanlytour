@@ -47,6 +47,7 @@
     border-radius: 10px;
     overflow: hidden;
     box-shadow: var(--shawdown-y2-02);
+    position: relative;
 }
 .content__tour-item-link{
     position: relative;
@@ -67,6 +68,25 @@
 .content__tour-item:hover .content__tour-item-img{
     transform: scale(1.1);
 }
+.content__tour-item-like a{
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    font-size: 3rem;
+    color: var(--color-gray);
+    transition: 0.25s;
+}
+.content__tour-item-like a:hover{
+    transform: scale(1.2);
+}
+.content__tour-item-like a:active{
+    transform: scale(1);
+}
+.content__tour-item-like.liked a{
+    color: var(--color-txt-error);
+    text-shadow: 0 0 10px var(--color-error);
+}
+
 .content__tour-item-group{
     padding: 5px 10px;
     display: flex;

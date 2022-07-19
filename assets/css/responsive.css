@@ -25,6 +25,9 @@
     .container-user{
         margin-top: -10px;
     }
+    .container_information-gruop-btn-item-liked{
+        display: inline-block;
+    }
     /* header  */
     .header,.fake-header{
         display: none;
@@ -61,6 +64,10 @@
         width: 100px;
         margin-left: 50%;
         transform: translateX(-50%);
+    }
+    .content__label{
+        padding: 5px;
+        height: auto;
     }
     /* Chi tiet tour  */
     .container-detail-heading-title{

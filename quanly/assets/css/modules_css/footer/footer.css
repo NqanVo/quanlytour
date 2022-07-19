@@ -1,4 +1,4 @@
 .footer{
     height: 200px;
-    background-color: brown;
+    background-color: var(--color-main);
 }

@@ -1,5 +1,10 @@
 <?php
 ob_start();
+    if(!isset($_SESSION['user_login']))
+    {
+        header('Location:index.php');
+    }
+    
     if(isset($_POST['capnhat_thongtin'])){
         $ten = $_POST['ten_nhanvien'];
         $diachi = $_POST['diachi_nhanvien'];
@@ -47,31 +52,31 @@ ob_end_flush();
                                     <span class="container-cart__form-label">Tên nhân viên:</span>
                                     <input type="text" name="ten_nhanvien"
                                         value="<?php echo $nhanvien_row['ten_nhanvien'] ?>"
-                                        class="input-df container-cart__form-input">
+                                        class="input-df container-cart__form-input" required>
                                 </div>
                                 <div class="form-input container-cart__form-group">
                                     <span class="container-cart__form-label">Địa chỉ:</span>
                                     <input type="text" name="diachi_nhanvien"
                                         value="<?php echo $nhanvien_row['diachi_nhanvien'] ?>"
-                                        class="input-df container-cart__form-input">
+                                        class="input-df container-cart__form-input" required>
                                 </div>
                                 <div class="form-input container-cart__form-group">
                                     <span class="container-cart__form-label">SDT:</span>
                                     <input type="number" name="sdt_nhanvien"
                                         value="<?php echo $nhanvien_row['sdt_nhanvien'] ?>"
-                                        class="input-df container-cart__form-input">
+                                        class="input-df container-cart__form-input" required>
                                 </div>
                                 <div class="form-input container-cart__form-group">
                                     <span class="container-cart__form-label">Email:</span>
                                     <input type="email" name="email_nhanvien"
                                         value="<?php echo $nhanvien_row['email_nhanvien'] ?>"
-                                        class="input-df container-cart__form-input">
+                                        class="input-df container-cart__form-input" required>
                                 </div>
                                 <div class="form-input container-cart__form-group">
                                     <span class="container-cart__form-label">CMND/CCCD:</span>
                                     <input type="number" name="cccd_nhanvien"
                                         value="<?php echo $nhanvien_row['cccd_nhanvien'] ?>"
-                                        class="input-df container-cart__form-input">
+                                        class="input-df container-cart__form-input" required>
                                 </div>
                                 <div class="form-input container-cart__form-group">
                                     <span class="container-cart__form-label">Giới tính:</span>

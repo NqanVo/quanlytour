@@ -19,8 +19,18 @@ html{
         opacity: 1;
     }
 }
+.none{
+    display: none;
+}
+body{
+    overflow-x: hidden;
+}
 .disabled{
     pointer-events:none;
+}
+.disabled-btn{
+    pointer-events:none;
+    opacity: 0.5;
 }
 :root{
     --color-white: #fff;
@@ -44,14 +54,14 @@ html{
     color: var(--color-black);
 }
 .success-txt{
-    color: var(--color-text-success);
+    color: var(--color-txt-success);
 }
 .error-bg-txt{
     background-color: var(--color-error);
     color: var(--color-black);
 }
 .error-txt{
-    color: var(--color-text-error);
+    color: var(--color-txt-error);
 }
 h1,h2,h3,h4,h5{
     margin: 0;

@@ -36,6 +36,8 @@
             if(isset($_SESSION['user_login']))
             {
         ?>
+        <li class="header__list-item"><a href="?select=tour&query=likedall" class="header__list-item-link"><i
+                    class="fa-solid fa-heart"></i></a></li>
         <li class="header__list-item"><a href="?select=tour&query=dattour" class="header__list-item-link"><i
                     class="fa-solid fa-cart-shopping"></i></a></li>
         <?php

@@ -8,6 +8,15 @@
     $now_year = Carbon::now()->year;
     
 
+    //check update lại status hotro_kinhphi
+    $check_status_hotro_count = mysqli_num_rows(mysqli_query($mysqli, "SELECT * FROM tbl_hotro_kinhphi WHERE status_hotro_kinhphi = '1' ORDER BY id_hotro_kinhphi DESC LIMIT 1"));
+    $check_status_hotro_row = mysqli_fetch_array(mysqli_query($mysqli, "SELECT * FROM tbl_hotro_kinhphi WHERE status_hotro_kinhphi = '1' ORDER BY id_hotro_kinhphi DESC LIMIT 1"));
+    if($check_status_hotro_count != null){
+        if($check_status_hotro_row['dennam_hotro_kinhphi'] <= $now_year){
+            $update_status_hotro = mysqli_query($mysqli, "UPDATE `tbl_hotro_kinhphi` SET `status_hotro_kinhphi`='0' WHERE id_hotro_kinhphi = '".$check_status_hotro_row['id_hotro_kinhphi']."'");
+        }
+    }
+    // đăng xuất
     if(isset($_GET['select']) && $_GET['select'] == 'dangxuat')
 	{
 		unset($_SESSION['user_login']);
@@ -95,6 +104,8 @@
         $donvi_select = "SELECT * FROM tbl_donvi WHERE tbl_donvi.id_donvi = '".$iddv."'";
         $donvi_query = mysqli_query($mysqli, $donvi_select);
         $donvi_row = mysqli_fetch_array($donvi_query);
+
+        $_SESSION['thongtin_user'] = array(array('id_donvi' => $iddv, 'id_phongban' => $idpb, 'id_nhanvien' => $idnv,'id_hotrokinhphi' => $id_hotrokinhphi, 'id_nhan_hotro' => $id_nhan_hotro,'thamnien' => $thamnien, 'tienhotro' => $tien_hotro));
     }
 ?>
 <!DOCTYPE html>
@@ -105,6 +116,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="//cdn.ckeditor.com/4.16.2/standard/ckeditor.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
     <link rel="stylesheet" href="./assets/font-icon/themify-icons/themify-icons.css">
@@ -115,7 +127,7 @@
     <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/3125/3125848.png">
 
 
-    <title>Tour</title>
+    <title>TravelVietNam</title>
 </head>
 
 <body>

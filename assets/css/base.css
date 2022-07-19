@@ -17,6 +17,12 @@ html{
     background-image: url(https://render.fineartamerica.com/images/images-profile-flow/350/images/artworkimages/medium/1/elise-zapista.jpg), url(https://th.bing.com/th/id/OIP.4u327XDmktKobBoVfg716AAAAA?pid=ImgDet&rs=1);
     background-position: cover;
 }
+body{
+    overflow-x: hidden;
+}
+.none{
+    display: none;
+}
 
 @keyframes grow{
     0%{
@@ -39,6 +45,7 @@ html{
     width: 100%;
     margin: 0 auto;
 }
+
 :root{
     --color-white: #fff;
     --color-black: #243236;
@@ -188,12 +195,18 @@ p, span{
     color: var(--color-minor);
 }
 
-.a-defaul{
+.a-defaul, .a-defaul-link{
     text-decoration: none;
     color: var(--color-black);
     text-align: center;
+    transition: 0.25s;
 }
-
+.a-defaul-link{
+    text-decoration: underline;
+}
+.a-defaul-link:hover{
+    color: var(--color-main);
+}
 
 
 

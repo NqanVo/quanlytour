@@ -1,4 +1,9 @@
 <?php
+    if(!isset($_SESSION['user_login']))
+    {
+        header('Location:index.php');
+    }
+
     if($nhanvien_row['gioitinh_nhanvien'] == 'nam'){
         $gioitinh_nhanvien_ucfirst = 'Nam';
     }
@@ -40,6 +45,9 @@
                             ?>
                         </div>
                         <div class="container_information-gruop-btn-gr">
+                            <a href="?select=tour&query=likedall"
+                                class="a-defaul btn-s btn-main container_information-gruop-btn-item container_information-gruop-btn-item-liked"><i
+                                    class="fa-solid fa-heart"></i></a>
                             <a href="?select=user&query=capnhatinfo&idnv=<?php echo $idnv ?>"
                                 class="a-defaul btn-s btn-main container_information-gruop-btn-item"><i
                                     class="ti-pencil"></i></a>
@@ -134,9 +142,12 @@
                         </div>
                         <div class="col l-6 c-12">
                             <div class="container_information-gr container_information-gr-work">
-                                <h3 class="container_information-gr-info-heading"><i class="fa-solid fa-exclamation"></i> Lưu ý</h3>
+                                <h3 class="container_information-gr-info-heading"><i
+                                        class="fa-solid fa-exclamation"></i> Lưu ý</h3>
                                 <p>- Vui lòng đặt lại nếu như tiền hỗ trợ chưa được khấu trừ vào giá tour.</p>
-                                <p>- Khi hủy tour, tiền hỗ trợ sẽ được khấu trừ vào tour còn lại trong <a href="?select=tour&query=lichsu" class="warring-txt">lịch sử đặt tour</a> hoặc sẽ được hoàn về và khấu trừ vào lần đặt tour kế tiếp.</p>
+                                <p>- Khi hủy tour, tiền hỗ trợ sẽ được khấu trừ vào tour còn lại trong <a
+                                        href="?select=tour&query=lichsu" class="warring-txt">lịch sử đặt tour</a> hoặc
+                                    sẽ được hoàn về và khấu trừ vào lần đặt tour kế tiếp.</p>
                                 <p>- Tiền hỗ trợ sẽ không được cộng dồn nếu như kì này bạn không sử dụng.</p>
                             </div>
                         </div>
